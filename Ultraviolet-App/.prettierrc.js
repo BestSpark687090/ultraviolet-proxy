@@ -6,6 +6,7 @@ const config = {
 	useTabs: true,
 	semi: true,
 	singleQuote: false,
+	maxLineLength: 100,
 };
 
 export default config;
