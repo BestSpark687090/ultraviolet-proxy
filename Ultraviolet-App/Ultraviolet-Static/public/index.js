@@ -63,3 +63,11 @@ form.addEventListener("submit", async (event) => {
   }
   frame.src = __uv$config.prefix + __uv$config.encodeUrl(url);
 });
+function newTab() {
+  try {
+    const url = search(address.value, searchEngine.value);
+    window.open(__uv$config.prefix + __uv$config.encodeUrl(url), "_blank");
+  } catch (e) {
+    alert(e);
+  }
+}
