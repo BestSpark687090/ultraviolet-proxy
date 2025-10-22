@@ -27,7 +27,7 @@ document.querySelectorAll("*").forEach(function (e) {
     // alert("hi, have recieved");
     debugger;
     if (ev.ctrlKey && ev.shiftKey && ev.code == "KeyZ") {
-      console.log("press");
+      // console.log("press");
       // Okay this will be funny...
       // To clarify that's the shortcut for signing out on Chromebook
       // :troll: js make sure not to press it twice

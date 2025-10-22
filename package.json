@@ -8,7 +8,7 @@
 		"node": ">=16.0.0"
 	},
 	"scripts": {
-		"start": "node Ultraviolet-App/index.js",
+		"start": "node Ultraviolet-App/src/index.js",
 		"format": "prettier --config .prettierrc.js --write .",
 		"lint": "eslint ./Ultraviolet-App/src/",
 		"lint:fix": "eslint ./Ultraviolet-App/src/ --fix"
