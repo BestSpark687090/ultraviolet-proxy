@@ -21,19 +21,25 @@ const error = document.getElementById("uv-error");
 const errorCode = document.getElementById("uv-error-code");
 const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 var keyRegistered = false;
+let frame = document.getElementById("uv-frame");
+document.querySelectorAll("*").forEach(function (e) {
+  e.addEventListener("keydown", function (ev) {
+    // alert("hi, have recieved");
+    debugger;
+    if (ev.ctrlKey && ev.shiftKey && ev.code == "KeyZ") {
+      console.log("press");
+      // Okay this will be funny...
+      // To clarify that's the shortcut for signing out on Chromebook
+      // :troll: js make sure not to press it twice
+
+      frame.style.display = "none";
+    }
+  });
+});
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   // add a little spice to it.
   if (!keyRegistered) {
-    document.addEventListener("keypress", function (ev) {
-      if (ev.ctrlKey && ev.shiftKey && ev.code == "KeyQ") {
-        // Okay this will be funny...
-        // To clarify that's the shortcut for signing out on Chromebook
-        // :troll: js make sure not to press it twice
-        let frame = document.getElementById("uv-frame");
-        frame.style.display = "none";
-      }
-    });
     keyRegistered = true;
     try {
       await registerSW();
