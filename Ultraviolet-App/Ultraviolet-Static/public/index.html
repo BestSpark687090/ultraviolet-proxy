@@ -12,6 +12,25 @@
       media="(prefers-color-scheme: dark)"
       content="#434c5e"
     />
+    <script src="https://unpkg.com/highlight.run"></script>
+    <script>
+      H.init("132006", {
+        // Get your project ID from https://app.highlight.io/setup
+        environment: "production",
+        version: "main",
+        networkRecording: {
+          privacySetting: "none", // very sorry, but i wanna test
+          enabled: true,
+          recordHeadersAndBody: true,
+          urlBlocklist: [
+            // insert full or partial urls that you don't want to record here
+            // Out of the box, Highlight will not record these URLs (they can be safely removed):
+            "https://www.googleapis.com/identitytoolkit",
+            "https://securetoken.googleapis.com",
+          ],
+        },
+      });
+    </script>
     <link rel="shortcut icon" content="favicon.ico" />
     <link rel="stylesheet" href="index.css" />
     <script src="baremux/index.js" defer></script>

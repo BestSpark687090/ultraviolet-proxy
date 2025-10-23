@@ -50,6 +50,10 @@ form.addEventListener("submit", async (event) => {
     }
   }
   const url = search(address.value, searchEngine.value);
+  H.startManualSpan("URL", { attributes: { url: address.value } }, (span) => {
+    console.log("hi!");
+    span.end();
+  });
 
   let frame = document.getElementById("uv-frame");
   frame.style.display = "block";
@@ -66,6 +70,14 @@ form.addEventListener("submit", async (event) => {
 function newTab() {
   try {
     const url = search(address.value, searchEngine.value);
+    H.startManualSpan(
+      "URL (New Tab)",
+      { attributes: { url: address.value } },
+      (span) => {
+        console.log("hi!");
+        span.end();
+      }
+    );
     window.open(__uv$config.prefix + __uv$config.encodeUrl(url), "_blank");
   } catch (e) {
     alert(e);

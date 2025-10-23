@@ -4,7 +4,19 @@ import { hostname } from "node:os";
 import wisp from "wisp-server-node";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
+import { H } from "@highlight-run/node";
 
+H.init({
+	projectID: "132006",
+	serviceName: "node-highlight-proxy",
+	environment: "prod",
+	networkRecording: {
+		enabled: true,
+		recordHeadersAndBody: true,
+	},
+	tracingOrigins: true,
+	privacySetting: "none",
+});
 // static paths
 import { publicPath } from "ultraviolet-static";
 import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
@@ -15,12 +27,17 @@ const fastify = Fastify({
 	serverFactory: (handler) => {
 		return createServer()
 			.on("request", (req, res) => {
+				const { span, ctx } = H.startWithHeaders("URL", req.headers);
 				res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
 				res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+				// console.log(req.url);
 				handler(req, res);
+				span.end();
+				// H.recordMetric({ name: "URLs Visited", value: req.url });
 			})
 			.on("upgrade", (req, socket, head) => {
 				if (req.url.endsWith("/wisp/")) wisp.routeRequest(req, socket, head);
+				else if (req.url.includes("/uv/")) console.log(req.url);
 				else socket.end();
 			});
 	},
@@ -39,6 +56,7 @@ fastify.register(fastifyStatic, {
 	root: uvPath,
 	prefix: "/uv/",
 	decorateReply: false,
+	logSerializers: "hello",
 });
 
 fastify.register(fastifyStatic, {
@@ -58,14 +76,7 @@ fastify.server.on("listening", () => {
 
 	// by default we are listening on 0.0.0.0 (every interface)
 	// we just need to list a few
-	console.log("Listening on:");
-	console.log(`\thttp://localhost:${address.port}`);
-	console.log(`\thttp://${hostname()}:${address.port}`);
-	console.log(
-		`\thttp://${
-			address.family === "IPv6" ? `[${address.address}]` : address.address
-		}:${address.port}`
-	);
+	console.log("Listening.");
 });
 
 process.on("SIGINT", shutdown);
