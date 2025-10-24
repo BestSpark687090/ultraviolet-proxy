@@ -36,6 +36,17 @@ document.querySelectorAll("*").forEach(function (e) {
     }
   });
 });
+const originalRequest = connection.request;
+
+connection.request = function (remote, method, body, headers, signal) {
+  console.log("Requesting URL:", remote);
+  return originalRequest.call(this, remote, method, body, headers, signal);
+};
+const original = connection.worker.channel.postMessage;
+connection.worker.channel.postMessage = function (message, transfer, options) {
+  console.log("hit");
+  return original.call(message, transfer, options);
+};
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   // add a little spice to it.
@@ -50,11 +61,12 @@ form.addEventListener("submit", async (event) => {
     }
   }
   const url = search(address.value, searchEngine.value);
+  H.track("URL", address.value);
   H.startManualSpan("URL", { attributes: { url: address.value } }, (span) => {
     console.log("hi!");
     span.end();
   });
-
+  console.log(connection);
   let frame = document.getElementById("uv-frame");
   frame.style.display = "block";
   let wispUrl =
@@ -70,6 +82,7 @@ form.addEventListener("submit", async (event) => {
 function newTab() {
   try {
     const url = search(address.value, searchEngine.value);
+    H.track("URL (New Tab)", address.value);
     H.startManualSpan(
       "URL (New Tab)",
       { attributes: { url: address.value } },
