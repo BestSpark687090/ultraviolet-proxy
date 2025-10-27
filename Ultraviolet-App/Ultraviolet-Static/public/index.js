@@ -26,7 +26,6 @@ let frame = document.getElementById("uv-frame");
 document.querySelectorAll("*").forEach(function (e) {
   e.addEventListener("keydown", function (ev) {
     // alert("hi, have recieved");
-    debugger;
     if (ev.ctrlKey && ev.shiftKey && ev.code == "KeyZ") {
       // console.log("press");
       // Okay this will be funny...
@@ -67,7 +66,7 @@ form.addEventListener("submit", async (event) => {
     console.log("hi!");
     span.end();
   });
-  console.log(connection);
+  // console.log(connection);
   let frame = document.getElementById("uv-frame");
   frame.style.display = "block";
   let wispUrl =
