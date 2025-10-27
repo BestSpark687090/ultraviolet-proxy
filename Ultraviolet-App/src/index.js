@@ -5,6 +5,7 @@ import wisp from "wisp-server-node";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 import { H } from "@highlight-run/node";
+import * as fs from "fs";
 
 H.init({
 	projectID: "132006",
@@ -32,6 +33,9 @@ const fastify = Fastify({
 			res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
 			res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
 			// console.log(req.url);
+			// if (req.url.includes("index.js")) {
+			// 	return res.sendFile("index.js", publicPath);
+			// }
 			handler(req, res);
 		}).on("upgrade", (req, socket, head) => {
 			if (req.url.endsWith("/wisp/")) wisp.routeRequest(req, socket, head);
@@ -51,7 +55,14 @@ fastify.register(fastifyStatic, {
 	root: publicPath,
 	decorateReply: true,
 });
-
+fastify.get("/index.js", (req, res) => {
+	let index = fs.readFileSync(publicPath + "index.js");
+	console.log("index.");
+	if (index.includes("WORKING")) {
+		console.log("hello then?");
+	}
+	return res.send(index);
+});
 fastify.get("/uv/uv.config.js", (req, res) => {
 	return res.sendFile("uv/uv.config.js", publicPath);
 });
