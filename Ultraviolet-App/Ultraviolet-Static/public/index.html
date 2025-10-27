@@ -15,10 +15,10 @@
     <script src="https://unpkg.com/highlight.run"></script>
     <script>
       let host = location.host;
-      let ver = host.includes("csb") ? "dev-csb" : "render";
+      let ver = host.includes("csb") ? "dev-csb" : "prod-render";
       H.init("132006", {
         // Get your project ID from https://app.highlight.io/setup
-        environment: "production",
+        environment: ver,
         version: ver,
         networkRecording: {
           //privacySetting: "none", // very sorry, but i wanna test
