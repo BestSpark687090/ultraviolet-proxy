@@ -26,20 +26,6 @@ import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 
 const fastify = Fastify();
-
-// Log all incoming requests
-fastify.server.on("request", (req, res) => {
-	// console.log(`Incoming Request: ${req.method} ${req.url}`);
-});
-
-fastify.addHook("onRequest", (request, reply, done) => {
-	// Log requests to /uv/ endpoints
-	if (request.url && request.url.startsWith("/uv/service")) {
-		// console.log(`Logging URI (onRequest): ${request.url}`);
-	}
-	done();
-});
-
 // Register static files
 fastify.register(fastifyStatic, {
 	root: publicPath,
@@ -73,20 +59,12 @@ fastify.register(fastifyStatic, {
 // Handling WebSocket upgrades
 fastify.server.on("upgrade", (req, socket, head) => {
 	// console.log(`Upgrade Request: ${socket.addListener}`);
-	socket.addListener("data", function (d) {
-		if (d.includes("BestSpark")) {
-			console.log("what");
-		}
-		// console.log(d.toString());
-	});
-	socket.addListener("finish", function (d) {
-		console.log(d);
-	});
 	if (req.url.endsWith("/wisp/")) {
 		wisp.routeRequest(req, socket, head);
 	} else if (req.url && req.url.startsWith("/uv/service/")) {
 		console.log(`WebSocket Upgrade URL: ${req.url}`);
 	} else {
+		console.log("ended socket");
 		socket.end(); // Close the connection for unsupported routes
 	}
 });

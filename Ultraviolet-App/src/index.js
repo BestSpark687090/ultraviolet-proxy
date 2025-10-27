@@ -4,20 +4,7 @@ import { hostname } from "node:os";
 import wisp from "wisp-server-node";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
-import { H } from "@highlight-run/node";
-import * as fs from "fs";
 
-H.init({
-	projectID: "132006",
-	serviceName: "node-highlight-proxy",
-	environment: "prod",
-	networkRecording: {
-		enabled: true,
-		recordHeadersAndBody: true,
-	},
-	tracingOrigins: true,
-	privacySetting: "none",
-});
 // static paths
 import { publicPath } from "ultraviolet-static";
 import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
@@ -26,51 +13,32 @@ import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 
 const fastify = Fastify({
 	serverFactory: (handler) => {
-		return createServer((req, res) => {
-			if (req.url.startsWith("/uv/")) {
-				console.log(req.url);
-			}
-			res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-			res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-			// console.log(req.url);
-			// if (req.url.includes("index.js")) {
-			// 	return res.sendFile("index.js", publicPath);
-			// }
-			handler(req, res);
-		}).on("upgrade", (req, socket, head) => {
-			if (req.url.endsWith("/wisp/")) wisp.routeRequest(req, socket, head);
-			else if (req.url.includes("/uv/")) console.log(req.url);
-			else socket.end();
-		});
+		return createServer()
+			.on("request", (req, res) => {
+				res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+				res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+				handler(req, res);
+			})
+			.on("upgrade", (req, socket, head) => {
+				if (req.url.endsWith("/wisp/")) wisp.routeRequest(req, socket, head);
+				else socket.end();
+			});
 	},
-});
-fastify.addHook("onRequest", (request, reply, done) => {
-	if (request.url.startsWith("/uv/")) {
-		console.log(`Log URL: ${request.url}`);
-	}
-	done();
 });
 
 fastify.register(fastifyStatic, {
 	root: publicPath,
 	decorateReply: true,
 });
-fastify.get("/index.js", (req, res) => {
-	let index = fs.readFileSync(publicPath + "index.js");
-	console.log("index.");
-	if (index.includes("WORKING")) {
-		console.log("hello then?");
-	}
-	return res.send(index);
-});
+
 fastify.get("/uv/uv.config.js", (req, res) => {
 	return res.sendFile("uv/uv.config.js", publicPath);
 });
+
 fastify.register(fastifyStatic, {
 	root: uvPath,
 	prefix: "/uv/",
 	decorateReply: false,
-	logSerializers: "hello",
 });
 
 fastify.register(fastifyStatic, {

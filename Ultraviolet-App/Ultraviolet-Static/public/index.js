@@ -15,7 +15,6 @@ const searchEngine = document.getElementById("uv-search-engine");
  * @type {HTMLParagraphElement}
  */
 const error = document.getElementById("uv-error");
-alert("a");
 // bro cmon WHY ARENT YOU WORKING
 /**
  * @type {HTMLPreElement}
