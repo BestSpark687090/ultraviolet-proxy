@@ -15,6 +15,7 @@ const searchEngine = document.getElementById("uv-search-engine");
  * @type {HTMLParagraphElement}
  */
 const error = document.getElementById("uv-error");
+alert("a");
 /**
  * @type {HTMLPreElement}
  */
@@ -89,7 +90,7 @@ function newTab() {
       (span) => {
         console.log("hi!");
         span.end();
-      }
+      },
     );
     window.open(__uv$config.prefix + __uv$config.encodeUrl(url), "_blank");
   } catch (e) {
