@@ -4,37 +4,40 @@ import { hostname } from "node:os";
 import wisp from "wisp-server-node";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
+import { H } from "@highlight-run/node";
 
-// static paths
+// Initialize Highlight
+H.init({
+	projectID: "132006",
+	serviceName: "node-highlight-proxy",
+	environment: "prod",
+	networkRecording: {
+		enabled: true,
+		recordHeadersAndBody: true,
+	},
+	tracingOrigins: true,
+	privacySetting: "none",
+});
+
+// Static paths
 import { publicPath } from "ultraviolet-static";
 import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 
-const fastify = Fastify({
-	serverFactory: (handler) => {
-		return createServer()
-			.on("request", (req, res) => {
-				res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-				res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-				handler(req, res);
-			})
-			.on("upgrade", (req, socket, head) => {
-				if (req.url.endsWith("/wisp/")) wisp.routeRequest(req, socket, head);
-				else socket.end();
-			});
-	},
-});
-
+const fastify = Fastify();
+// Register static files
 fastify.register(fastifyStatic, {
 	root: publicPath,
 	decorateReply: true,
 });
 
+// Serve UV config file
 fastify.get("/uv/uv.config.js", (req, res) => {
 	return res.sendFile("uv/uv.config.js", publicPath);
 });
 
+// Register additional static routes
 fastify.register(fastifyStatic, {
 	root: uvPath,
 	prefix: "/uv/",
@@ -53,28 +56,30 @@ fastify.register(fastifyStatic, {
 	decorateReply: false,
 });
 
-fastify.server.on("listening", () => {
-	const address = fastify.server.address();
-
-	// by default we are listening on 0.0.0.0 (every interface)
-	// we just need to list a few
-	console.log("Listening.");
+// Handling WebSocket upgrades
+fastify.server.on("upgrade", (req, socket, head) => {
+	// console.log(`Upgrade Request: ${socket.addListener}`);
+	if (req.url.endsWith("/wisp/")) {
+		wisp.routeRequest(req, socket, head);
+	} else if (req.url && req.url.startsWith("/uv/service/")) {
+		console.log(`WebSocket Upgrade URL: ${req.url}`);
+	} else {
+		console.log("ended socket");
+		socket.end(); // Close the connection for unsupported routes
+	}
 });
 
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
-
-function shutdown() {
-	console.log("SIGTERM signal received: closing HTTP server");
-	fastify.close();
-	process.exit(0);
-}
-
-let port = parseInt(process.env.PORT || "");
-
-if (isNaN(port)) port = 8080;
-
+// Start the server
+const port = parseInt(process.env.PORT) || 8080;
 fastify.listen({
 	port: port,
 	host: "0.0.0.0",
 });
+// Graceful shutdown
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
+
+function shutdown() {
+	console.log("Shutting down server...");
+	fastify.close(() => process.exit(0));
+}
