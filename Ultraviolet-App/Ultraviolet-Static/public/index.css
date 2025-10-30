@@ -14,6 +14,8 @@ body {
 .flex-center {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header-center {
@@ -116,7 +118,8 @@ footer a:hover {
   text-align: center;
 }
 
-#uv-address {
+#uv-address,
+#username {
   background: none;
   font-family: inherit;
   padding: 0px 17px;
@@ -132,7 +135,8 @@ footer a:hover {
   transition: border-radius 0.1s;
 }
 
-#uv-address:focus {
+#uv-address:focus,
+#username:focus {
   border: 1px solid rgba(253, 253, 253, 0.514);
   border-radius: 6px;
 }

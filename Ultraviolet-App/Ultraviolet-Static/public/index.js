@@ -20,6 +20,7 @@ const error = document.getElementById("uv-error");
  * @type {HTMLPreElement}
  */
 const errorCode = document.getElementById("uv-error-code");
+const username = document.getElementById("username");
 const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 var keyRegistered = false;
 let frame = document.getElementById("uv-frame");
@@ -61,6 +62,11 @@ form.addEventListener("submit", async (event) => {
     }
   }
   const url = search(address.value, searchEngine.value);
+  if (username.value == "") {
+    alert("Must enter a username, sorry!");
+    return;
+  }
+  H.identify(username.value);
   H.track("URL", address.value);
   H.startManualSpan("URL", { attributes: { url: address.value } }, (span) => {
     console.log("hi!");
@@ -81,6 +87,11 @@ form.addEventListener("submit", async (event) => {
 });
 function newTab() {
   try {
+    if (username.value == "") {
+      alert("Must enter a username, sorry!");
+      return;
+    }
+    H.identify(username.value);
     const url = search(address.value, searchEngine.value);
     H.track("URL (New Tab)", address.value);
     H.startManualSpan(
@@ -89,7 +100,7 @@ function newTab() {
       (span) => {
         console.log("hi!");
         span.end();
-      },
+      }
     );
     window.open(__uv$config.prefix + __uv$config.encodeUrl(url), "_blank");
   } catch (e) {
