@@ -8,10 +8,10 @@
 		"node": ">=16.0.0"
 	},
 	"scripts": {
-		"start": "node src/index.js",
+		"start": "nodeindex.js",
 		"format": "prettier --config .prettierrc.js --write .",
-		"lint": "eslint ./src/",
-		"lint:fix": "eslint ./src/ --fix"
+		"lint": "eslint ./",
+		"lint:fix": "eslint ./ --fix"
 	},
 	"keywords": [
 		"proxy"
