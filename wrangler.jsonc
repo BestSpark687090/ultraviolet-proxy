@@ -1,5 +1,5 @@
 {
-    "name": "worker-name",
+    "name": "ultraviolet-proxy",
     "compatibility_date": "2025-11-18",
 	"main": "Ultraviolet-App/index.js",
     "compatibility_flags":[
