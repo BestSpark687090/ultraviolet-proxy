@@ -22,10 +22,9 @@ import { publicPath } from "ultraviolet-static";
 import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
 // import { epoxyPath } from "./node_modules/@mercuryworkshop/epoxy-transport/lib/index.cjs";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
-let epoxyImportPath = resolve(
-	baremuxPath + "/../../epoxy-transport/lib/index.cjs"
-);
+let epoxyImportPath = resolve(baremuxPath + "/../../epoxy-transport/dist");
 let ePath = "";
+console.log(epoxyImportPath);
 // import {epoxyPath} from `${epoxyImportPath}`;
 
 console.log(ePath, "<- epoxy path");
@@ -47,18 +46,18 @@ fastify.register(fastifyStatic, {
 	prefix: "/uv/",
 	decorateReply: false,
 });
-(async () => {
-	await import(epoxyImportPath).then(function (v) {
-		ePath = v.epoxyPath;
-	});
-	fastify.register(fastifyStatic, {
-		root: ePath,
-		prefix: "/epoxy/",
-		decorateReply: false,
-	});
+fastify.register(fastifyStatic, {
+	root: epoxyImportPath,
+	prefix: "/epoxy/",
+	decorateReply: false,
+});
+// (async () => {
+// 	await import(epoxyImportPath).then(function (v) {
+// 		ePath = v.epoxyPath;
+// 	});
 
-	// ePath = epoxyPath;
-})();
+// 	// ePath = epoxyPath;
+// })();
 
 fastify.register(fastifyStatic, {
 	root: baremuxPath,
