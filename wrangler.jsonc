@@ -9,6 +9,6 @@
     "rules": [
         {"type":"ESModule",
     "globs": ["**/*.js"]}
-    ],
-    "node_compat": true
+    ]
+    // "node_compat": true
 }
