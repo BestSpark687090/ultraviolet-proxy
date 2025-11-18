@@ -5,6 +5,7 @@ import wisp from "wisp-server-node";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 import { H } from "@highlight-run/node";
+import { resolve } from "node:path";
 
 // Initialize Highlight
 H.init({
@@ -22,9 +23,15 @@ H.init({
 // Static paths
 import { publicPath } from "ultraviolet-static";
 import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
-import { epoxyPath } from "./node_modules/@mercuryworkshop/epoxy-transport/lib/index.cjs";
+// import { epoxyPath } from "./node_modules/@mercuryworkshop/epoxy-transport/lib/index.cjs";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
+let epoxyImportPath = resolve(
+	baremuxPath + "/../../epoxy-transport/lib/index.cjs"
+);
+let ePath = "";
+// import {epoxyPath} from `${epoxyImportPath}`;
 
+console.log(ePath, "<- epoxy path");
 const fastify = Fastify();
 // Register static files
 fastify.register(fastifyStatic, {
@@ -43,12 +50,18 @@ fastify.register(fastifyStatic, {
 	prefix: "/uv/",
 	decorateReply: false,
 });
+(async () => {
+	await import(epoxyImportPath).then(function (v) {
+		ePath = v.epoxyPath;
+	});
+	fastify.register(fastifyStatic, {
+		root: ePath,
+		prefix: "/epoxy/",
+		decorateReply: false,
+	});
 
-fastify.register(fastifyStatic, {
-	root: epoxyPath,
-	prefix: "/epoxy/",
-	decorateReply: false,
-});
+	// ePath = epoxyPath;
+})();
 
 fastify.register(fastifyStatic, {
 	root: baremuxPath,
