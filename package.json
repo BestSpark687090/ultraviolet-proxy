@@ -23,10 +23,10 @@
     "@highlight-run/node": "^3.12.22",
     "@mercuryworkshop/bare-mux": "^2.1.6",
     "@mercuryworkshop/epoxy-transport": "^2.1.25",
+    "@mercuryworkshop/wisp-js": "^0.4.0",
     "@titaniumnetwork-dev/ultraviolet": "^3.2.10",
     "fastify": "^5.0.0",
     "ultraviolet-static": "file:Ultraviolet-App/Ultraviolet-Static",
-    "wisp-server-node": "^1.1.8",
     "ws": "^8.18.0"
   },
   "devDependencies": {

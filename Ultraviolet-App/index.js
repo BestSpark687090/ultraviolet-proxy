@@ -1,9 +1,9 @@
-import wisp from "wisp-server-node";
+import { server } from "@mercuryworkshop/wisp-js/server";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 import { H } from "@highlight-run/node";
 import { resolve } from "node:path";
-
+const rReq = server.routeRequest;
 // Initialize Highlight
 H.init({
 	projectID: "132006",
@@ -69,7 +69,7 @@ fastify.register(fastifyStatic, {
 fastify.server.on("upgrade", (req, socket, head) => {
 	// console.log(`Upgrade Request: ${socket.addListener}`);
 	if (req.url.endsWith("/wisp/")) {
-		wisp.routeRequest(req, socket, head);
+		rReq(req, socket, head);
 	} else if (req.url && req.url.startsWith("/uv/service/")) {
 		console.log(`WebSocket Upgrade URL: ${req.url}`);
 	} else {
