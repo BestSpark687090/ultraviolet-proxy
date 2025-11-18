@@ -3,7 +3,7 @@
     "compatibility_date": "2025-11-18",
 	"main": "Ultraviolet-App/index.js",
     "compatibility_flags":[
-        "nodejs_compat_v2",
+        // "nodejs_compat_v2",
         "nodejs_compat"
     ],
     "rules": [
