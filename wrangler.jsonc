@@ -2,7 +2,9 @@
     "name": "worker-name",
     "compatibility_date": "2025-11-18",
 	"main": "Ultraviolet-App/index.js",
-    "nodejs_compat": true,
+    "compatibility_flags":[
+        "nodejs_compat_v2"
+    ],
     "rules": [
         {"type":"ESModule",
     "globs": ["**/*.js"]}
