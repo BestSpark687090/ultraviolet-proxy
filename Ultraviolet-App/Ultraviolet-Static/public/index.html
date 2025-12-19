@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -18,8 +18,8 @@
       let ver = host.includes("csb")
         ? "dev-csb"
         : host.includes("vercel")
-          ? "prod-vercel"
-          : "prod-render";
+        ? "prod-vercel"
+        : "prod-render";
       H.init("132006", {
         // Get your project ID from https://app.highlight.io/setup
         environment: ver,
@@ -46,6 +46,20 @@
     <script src="register-sw.js" defer></script>
     <script src="search.js" defer></script>
     <script src="index.js" defer></script>
+    <!-- Google tag (gtag.js) (i'm sorry) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-XEY66QJESF"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-XEY66QJESF");
+    </script>
   </head>
   <body>
     <div class="flex-center logo-wrapper header-center">
