@@ -1,1 +1,1 @@
-import("./Ultraviolet-App/index.js");
+export default import("./Ultraviolet-App/index.js");
