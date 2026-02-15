@@ -92,4 +92,4 @@ function shutdown() {
 	console.log("Shutting down server...");
 	fastify.close(() => process.exit(0));
 }
-export default { fastify };
+export default fastify;
