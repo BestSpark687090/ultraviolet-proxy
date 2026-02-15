@@ -38,8 +38,8 @@
         },
       });
       import { createClient } from 'https://cdn.jsdelivr.net/npm/@launchdarkly/js-client-sdk/dist/index.js';
-import { Observability } from 'https://cdn.jsdelivr.net/npm/@launchdarkly/observability/dist/index.js';
-import { SessionReplay } from 'https://cdn.jsdelivr.net/npm/@launchdarkly/session-replay/dist/index.js';
+import Observability, { LDObserve } from 'https://cdn.jsdelivr.net/npm/@launchdarkly/observability/dist/index.js';
+import SessionReplay, { LDRecord } from 'https://cdn.jsdelivr.net/npm/@launchdarkly/session-replay/dist/index.js';
 
       const context = {
   kind: 'user',
