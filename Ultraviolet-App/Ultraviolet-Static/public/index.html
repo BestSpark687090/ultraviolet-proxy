@@ -38,6 +38,7 @@
         },
       });
       import { createClient } from 'https://cdn.jsdelivr.net/npm/@launchdarkly/js-client-sdk/dist/index.js';
+      import { LDClient } from 'https://cdn.jsdelivr.net/npm/launchdarkly-js-client-sdk/dist/index.js'; // maybe?
 import Observability, { LDObserve } from 'https://cdn.jsdelivr.net/npm/@launchdarkly/observability/dist/index.js';
 import SessionReplay, { LDRecord } from 'https://cdn.jsdelivr.net/npm/@launchdarkly/session-replay/dist/index.js';
 
@@ -68,7 +69,29 @@ if (status === 'complete') {
 } else {
   console.error('Initialization failed');
 }
+const client2 = LDClient.initialize('69920bd42aae3b09e8e14fed', {
+  // … your existing config, if relevant
+  plugins: [
+    new Observability({
+      networkRecording: {
+        enabled: true,
+        recordHeadersAndBody: true
+      }
+    }),
+    new SessionReplay({
+      // Use 'none' to turn off session replay obfuscation. To learn more, read: https://launchdarkly.com/docs/sdk/features/session-replay-config#privacy
+      privacySetting: 'none'
+    })
+  ],
+});
+client2.start();
+const { status2 } = await client2.waitForInitialization();
 
+if (status2 === 'complete') {
+  console.log('SDK2 successfully initialized!');
+} else {
+  console.error('Initialization2 failed');
+}
     </script>
     <link rel="shortcut icon" content="favicon.ico" />
     <link rel="stylesheet" href="index.css" />
