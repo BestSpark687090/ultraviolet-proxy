@@ -45,18 +45,7 @@ import SessionReplay, { LDRecord } from 'https://cdn.jsdelivr.net/npm/@launchdar
   kind: 'user',
   key: ver
 };
-const client = createClient('69920bd42aae3b09e8e14fed', context);
-client.start();
-
-const { status } = await client.waitForInitialization();
-
-if (status === 'complete') {
-  console.log('SDK successfully initialized!');
-} else {
-  console.error('Initialization failed');
-}
-const client2 = initialize('69920bd42aae3b09e8e14fed', {
-  plugins: [
+const client = createClient('69920bd42aae3b09e8e14fed', context, {plugins: [
     new Observability({
       tracingOrigins: true, // attribute frontend requests to backend domains
       networkRecording: {
@@ -69,8 +58,16 @@ const client2 = initialize('69920bd42aae3b09e8e14fed', {
       // or 'default' to redact text matching common regex for PII
       // or 'none' to turn off obfuscation
     })
-  ]
-});
+  ]});
+client.start();
+
+const { status } = await client.waitForInitialization();
+
+if (status === 'complete') {
+  console.log('SDK successfully initialized!');
+} else {
+  console.error('Initialization failed');
+}
 
     </script>
     <link rel="shortcut icon" content="favicon.ico" />
