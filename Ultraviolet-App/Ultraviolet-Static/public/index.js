@@ -72,6 +72,7 @@ form.addEventListener("submit", async (event) => {
     console.log("hi!");
     span.end();
   });
+  client.track("URL",{"user": username.value, "url": address.value})
   // console.log(connection);
   let frame = document.getElementById("uv-frame");
   frame.style.display = "block";
@@ -102,6 +103,7 @@ function newTab() {
         span.end();
       }
     );
+    client.track("URL (New Tab)",{"user": username.value, "url": address.value})
     window.open(__uv$config.prefix + __uv$config.encodeUrl(url), "_blank");
   } catch (e) {
     alert(e);
