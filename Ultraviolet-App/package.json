@@ -30,6 +30,7 @@
 		"ultraviolet-static": "file:Ultraviolet-Static",
 		"wisp-server-node": "^1.1.7",
 		"ws": "^8.18.0"
+		
 	},
 	"devDependencies": {
 		"eslint": "^9.13.0",

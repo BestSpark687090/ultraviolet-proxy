@@ -13,8 +13,19 @@
       content="#434c5e"
     />
     <script src="https://unpkg.com/highlight.run"></script>
-<!-- <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@launchdarkly/js-client-sdk/dist/index.js"></script> -->
-    <script type="module">
+    <script
+      crossorigin="anonymous"
+      src="https://cdn.jsdelivr.net/npm/launchdarkly-js-client-sdk"
+    ></script>
+    <script
+      crossorigin="anonymous"
+      src="https://cdn.jsdelivr.net/npm/@launchdarkly/observability"
+    ></script>
+    <script
+      crossorigin="anonymous"
+      src="https://cdn.jsdelivr.net/npm/@launchdarkly/session-replay"
+    ></script>
+    <script>
       let host = location.host;
       let ver = host.includes("csb")
         ? "dev-csb"
@@ -37,61 +48,29 @@
           ],
         },
       });
-      import { createClient } from 'https://cdn.jsdelivr.net/npm/@launchdarkly/js-client-sdk/dist/index.js';
-      import { LDClient } from 'https://cdn.jsdelivr.net/npm/launchdarkly-js-client-sdk/dist/index.js'; // maybe?
-import Observability, { LDObserve } from 'https://cdn.jsdelivr.net/npm/@launchdarkly/observability/dist/index.js';
-import SessionReplay, { LDRecord } from 'https://cdn.jsdelivr.net/npm/@launchdarkly/session-replay/dist/index.js';
-
+      // import { LDClient } from "https://cdn.jsdelivr.net/npm/launchdarkly-js-client-sdk";
+      // import Observability, { LDObserve } from "@launchdarkly/observability";
+      // import SessionReplay, { LDRecord } from "@launchdarkly/session-replay";
+      // import { createClient } from "https://cdn.jsdelivr.net/npm/@launchdarkly/js-client-sdk/dist/index.min.js";
       const context = {
-  kind: 'user',
-  key: ver
-};
-const client = createClient('69920bd42aae3b09e8e14fed', context, {plugins: [
-    new Observability({
-      tracingOrigins: true, // attribute frontend requests to backend domains
-      networkRecording: {
-        enabled: true,
-        recordHeadersAndBody: true
-      }
-    }),
-    new SessionReplay({
-      privacySetting: 'none',
-      // or 'default' to redact text matching common regex for PII
-      // or 'none' to turn off obfuscation
-    })
-  ]});
-client.start();
-
-const { status } = await client.waitForInitialization();
-
-if (status === 'complete') {
-  console.log('SDK successfully initialized!');
-} else {
-  console.error('Initialization failed');
-}
-const client2 = LDClient.initialize('69920bd42aae3b09e8e14fed', {
-  // … your existing config, if relevant
-  plugins: [
-    new Observability({
-      networkRecording: {
-        enabled: true,
-        recordHeadersAndBody: true
-      }
-    }),
-    new SessionReplay({
-      // Use 'none' to turn off session replay obfuscation. To learn more, read: https://launchdarkly.com/docs/sdk/features/session-replay-config#privacy
-      privacySetting: 'none'
-    })
-  ],
-});
-client2.start();
-const { status2 } = await client2.waitForInitialization();
-
-if (status2 === 'complete') {
-  console.log('SDK2 successfully initialized!');
-} else {
-  console.error('Initialization2 failed');
-}
+        kind: "user",
+        key: ver,
+      };
+      const client = LDClient.initialize("69920bd42aae3b09e8e14fed", context, {
+        plugins: [
+          new Observability.default({
+            tracingOrigins: true,
+            networkRecording: { enabled: true, recordHeadersAndBody: true },
+            contextFriendlyName: (context) => {
+              const username = document.getElementById("username");
+              const address = document.getElementById("uv-address");
+              return username.value == "" ? undefined : username.value;
+            },
+          }),
+          new SessionReplay.default({ privacySetting: "none" }),
+        ],
+      });
+      console.log(client);
     </script>
     <link rel="shortcut icon" content="favicon.ico" />
     <link rel="stylesheet" href="index.css" />
