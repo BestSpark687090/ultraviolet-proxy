@@ -73,6 +73,9 @@ form.addEventListener("submit", async (event) => {
     span.end();
   });
   client.track("URL",{"user": username.value, "url": address.value})
+  LDObserve.startSpan('URLGrab', (span) => {
+    console.log(username.value, "visited", address.value)
+  });
   // console.log(connection);
   let frame = document.getElementById("uv-frame");
   frame.style.display = "block";
@@ -104,6 +107,9 @@ function newTab() {
       }
     );
     client.track("URL (New Tab)",{"user": username.value, "url": address.value})
+    LDObserve.startSpan('URLGrab (New Tab)', (span) => {
+    console.log(username.value, "visited", address.value)
+  });
     window.open(__uv$config.prefix + __uv$config.encodeUrl(url), "_blank");
   } catch (e) {
     alert(e);
