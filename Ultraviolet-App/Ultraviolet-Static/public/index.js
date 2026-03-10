@@ -66,6 +66,10 @@ form.addEventListener("submit", async (event) => {
     alert("Must enter a username, sorry!");
     return;
   }
+  if (address.value == ""){
+    alert("Please type your search/URL into the space below the username field.");
+    return;
+  }
   H.identify(username.value);
   H.track("URL", address.value);
   H.startManualSpan("URL", { attributes: { url: address.value } }, (span) => {
