@@ -99,6 +99,10 @@ function newTab() {
       alert("Must enter a username, sorry!");
       return;
     }
+    if (address.value == ""){
+      alert("Please type your search/URL into the space below the username field.");
+      return;
+    }
     H.identify(username.value);
     const url = search(address.value, searchEngine.value);
     H.track("URL (New Tab)", address.value);
