@@ -73,13 +73,14 @@ form.addEventListener("submit", async (event) => {
   H.identify(username.value);
   H.track("URL", address.value);
   H.startManualSpan("URL", { attributes: { url: address.value } }, (span) => {
-    console.log("hi!");
+    console.log(username.value, "visited", address.value)
     span.end();
   });
   client.track("URL",{"user": username.value, "url": address.value})
   LDObserve.startSpan('URLGrab', (span) => {
     console.log(username.value, "visited", address.value)
   });
+  console.log(username.value, "visited", address.value)
   // console.log(connection);
   let frame = document.getElementById("uv-frame");
   frame.style.display = "block";
@@ -110,11 +111,12 @@ function newTab() {
       "URL (New Tab)",
       { attributes: { url: address.value } },
       (span) => {
-        console.log("hi!");
+        console.log(username.value, "visited", address.value)
         span.end();
       }
     );
     client.track("URL (New Tab)",{"user": username.value, "url": address.value})
+    console.log(username.value, "visited", address.value)
     LDObserve.startSpan('URLGrab (New Tab)', (span) => {
     console.log(username.value, "visited", address.value)
   });
