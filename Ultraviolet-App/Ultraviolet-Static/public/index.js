@@ -19,6 +19,7 @@ const error = document.getElementById("uv-error");
 /**
  * @type {HTMLPreElement}
  */
+console.log("init test, if this shows up on the vps servers then you know this has worked")
 const errorCode = document.getElementById("uv-error-code");
 const username = document.getElementById("username");
 const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
