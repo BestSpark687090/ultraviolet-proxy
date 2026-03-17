@@ -19,7 +19,7 @@ const error = document.getElementById("uv-error");
 /**
  * @type {HTMLPreElement}
  */
-console.log("init test, if this shows up on the vps servers then you know this has worked")
+//console.log("init test, if this shows up on the vps servers then you know this has worked")
 const errorCode = document.getElementById("uv-error-code");
 const username = document.getElementById("username");
 const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
@@ -63,7 +63,7 @@ let ip = "";
 async function checkOne(grabber){
   let res = await fetch(grabber)
   let json = await res.json()
-  console.log(json.ip)
+  //console.log(json.ip)
   ip = json.ip;
 }
 form.addEventListener("submit", async (event) => {
@@ -91,14 +91,14 @@ form.addEventListener("submit", async (event) => {
   H.identify(username.value);
   H.track("URL", address.value);
   H.startManualSpan("URL", { attributes: { url: address.value } }, (span) => {
-    console.log(username.value, "visited", address.value,"IP is",ip)
+    console.log(username.value, "visited", address.value,"IP is",ip,"h track")
     span.end();
   });
   client.track("URL",{"user": username.value, "url": address.value})
   LDObserve.startSpan('URLGrab', (span) => {
-    console.log(username.value, "visited", address.value,"IP is",ip)
+    console.log(username.value, "visited", address.value,"IP is",ip,"man span")
   });
-  console.log(username.value, "visited", address.value,"IP is",ip)
+  console.log(username.value, "visited", address.value,"IP is",ip,"normal tab")
   // console.log(connection);
   let frame = document.getElementById("uv-frame");
   frame.style.display = "block";
@@ -129,14 +129,14 @@ function newTab() {
       "URL (New Tab)",
       { attributes: { url: address.value } },
       (span) => {
-        console.log(username.value, "visited", address.value,"IP is",ip)
+        console.log(username.value, "visited", address.value,"IP is",ip,"h")
         span.end();
       }
     );
     client.track("URL (New Tab)",{"user": username.value, "url": address.value})
-    console.log(username.value, "visited", address.value,"IP is",ip)
+    console.log(username.value, "visited", address.value,"IP is",ip,"ntp")
     LDObserve.startSpan('URLGrab (New Tab)', (span) => {
-    console.log(username.value, "visited", address.value,"IP is",ip)
+    console.log(username.value, "visited", address.value,"IP is",ip,"ld span")
   });
     window.open(__uv$config.prefix + __uv$config.encodeUrl(url), "_blank");
   } catch (e) {
