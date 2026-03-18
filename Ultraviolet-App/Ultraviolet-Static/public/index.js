@@ -65,6 +65,7 @@ async function checkOne(grabber){
   let json = await res.json()
   //console.log(json.ip)
   ip = json.ip;
+  return true;
 }
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
