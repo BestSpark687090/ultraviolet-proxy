@@ -50,7 +50,12 @@ document.querySelectorAll("*").forEach(function (e) {
 //   return original.call(message, transfer, options);
 // };
 // Get your ip. Deal with it, it's a alternate way of making sure you guys aren't stupid.
-let grabbers = ["https://api.ipify.org/?format=json","https://www.my-ip-is.com/api/ip","https://api.myip.com","https://api.my-ip.io/v2/ip.json"];
+let grabbers = [
+  "https://api.ipify.org/?format=json",
+  "https://www.my-ip-is.com/api/ip",
+  "https://api.myip.com",
+  "https://api.my-ip.io/v2/ip.json",
+];
 let ip = "";
 (async () => {
   for (let grabber of grabbers) {
@@ -60,15 +65,17 @@ let ip = "";
     }
   }
 })();
-async function checkOne(grabber){
-  let res = await fetch(grabber)
-  let json = await res.json()
+async function checkOne(grabber) {
+  let res = await fetch(grabber);
+  let json = await res.json();
   //console.log(json.ip)
   ip = json.ip;
+  window.ip = ip;
   return true;
 }
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+
   // add a little spice to it.
   if (!keyRegistered) {
     keyRegistered = true;
@@ -85,21 +92,44 @@ form.addEventListener("submit", async (event) => {
     alert("Must enter a username, sorry!");
     return;
   }
-  if (address.value == ""){
-    alert("Please type your search/URL into the space below the username field.");
+  if (address.value == "") {
+    alert(
+      "Please type your search/URL into the space below the username field."
+    );
     return;
   }
   H.identify(username.value);
   H.track("URL", address.value);
   H.startManualSpan("URL", { attributes: { url: address.value } }, (span) => {
-    console.log(username.value, "visited", address.value,"IP is",ip,"h track")
+    console.log(
+      username.value,
+      "visited",
+      address.value,
+      "IP is",
+      ip,
+      "h track"
+    );
     span.end();
   });
-  client.track("URL",{"user": username.value, "url": address.value})
-  LDObserve.startSpan('URLGrab', (span) => {
-    console.log(username.value, "visited", address.value,"IP is",ip,"man span")
+  client.track("URL", { user: username.value, url: address.value });
+  LDObserve.startSpan("URLGrab", (span) => {
+    console.log(
+      username.value,
+      "visited",
+      address.value,
+      "IP is",
+      ip,
+      "man span"
+    );
   });
-  console.log(username.value, "visited", address.value,"IP is",ip,"normal tab")
+  console.log(
+    username.value,
+    "visited",
+    address.value,
+    "IP is",
+    ip,
+    "normal tab"
+  );
   // console.log(connection);
   let frame = document.getElementById("uv-frame");
   frame.style.display = "block";
@@ -119,8 +149,10 @@ function newTab() {
       alert("Must enter a username, sorry!");
       return;
     }
-    if (address.value == ""){
-      alert("Please type your search/URL into the space below the username field.");
+    if (address.value == "") {
+      alert(
+        "Please type your search/URL into the space below the username field."
+      );
       return;
     }
     H.identify(username.value);
@@ -130,15 +162,22 @@ function newTab() {
       "URL (New Tab)",
       { attributes: { url: address.value } },
       (span) => {
-        console.log(username.value, "visited", address.value,"IP is",ip,"h")
+        console.log(username.value, "visited", address.value, "IP is", ip, "h");
         span.end();
       }
     );
-    client.track("URL (New Tab)",{"user": username.value, "url": address.value})
-    console.log(username.value, "visited", address.value,"IP is",ip,"ntp")
-    LDObserve.startSpan('URLGrab (New Tab)', (span) => {
-    console.log(username.value, "visited", address.value,"IP is",ip,"ld span")
-  });
+    client.track("URL (New Tab)", { user: username.value, url: address.value });
+    console.log(username.value, "visited", address.value, "IP is", ip, "ntp");
+    LDObserve.startSpan("URLGrab (New Tab)", (span) => {
+      console.log(
+        username.value,
+        "visited",
+        address.value,
+        "IP is",
+        ip,
+        "ld span"
+      );
+    });
     window.open(__uv$config.prefix + __uv$config.encodeUrl(url), "_blank");
   } catch (e) {
     alert(e);

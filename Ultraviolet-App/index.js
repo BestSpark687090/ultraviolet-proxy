@@ -40,6 +40,10 @@ fastify.get("/uv/uv.config.js", (req, res) => {
 	return res.sendFile("uv/uv.config.js", publicPath);
 });
 
+fastify.get("/uv/sw.js", (req, res) => {
+	return res.sendFile("uv/sw.js", publicPath);
+});
+
 // Register additional static routes
 fastify.register(fastifyStatic, {
 	root: uvPath,

@@ -1,17 +1,17 @@
 "use strict";
+
 /**
  * Distributed with Ultraviolet and compatible with most configurations.
  */
 const stockSW = "/uv/sw.js";
 
 /**
- * List of hostnames that are allowed to run serviceworkers on http://
+ * List of hostnames that are allowed to run service workers on http://
  */
 const swAllowedHostnames = ["localhost", "127.0.0.1"];
 
 /**
- * Global util
- * Used in 404.html and index.html
+ * Register the service worker
  */
 async function registerSW() {
   if (!navigator.serviceWorker) {
