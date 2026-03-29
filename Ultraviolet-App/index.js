@@ -44,6 +44,12 @@ fastify.get("/uv/sw.js", (req, res) => {
 	return res.sendFile("uv/sw.js", publicPath);
 });
 
+fastify.post("/reportURL", (req,res)=>{
+	let body = req.body
+	console.log(`[${new Date().toLocaleString()}]: ${body.username} visited ${body.url}, IP is ${req.ip}`)
+	return res.code(204).send({"message": "Done."})
+})
+
 // Register additional static routes
 fastify.register(fastifyStatic, {
 	root: uvPath,
