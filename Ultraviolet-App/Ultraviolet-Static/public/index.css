@@ -1,5 +1,28 @@
+@font-face {
+  font-family: "comic";
+  src: url("comic.ttf") format("ttf");
+}
+@font-face {
+  font-family: "rot13";
+  src: url("comic-rot13.ttf") format("ttf"),
+    url("comic-rot13.woff2") format("woff2");
+}
+rot13,
+rot13ns {
+  font-family: "ROT13", "IBM Plex Sans", sans-serif;
+}
+/* rot13-ns = no space */
+
+rot13::before {
+  content: "\00A0";
+  /* non-breaking space- aka nbsp */
+}
+
+rot13::after {
+  content: "\00A0";
+}
 body {
-  font-family: "Comic Sans MS", cursive;
+  font-family: "comic", cursive;
   margin: 0;
   background: #111;
   display: flex;
