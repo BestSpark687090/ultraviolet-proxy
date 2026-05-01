@@ -22,6 +22,7 @@ async function handleRequest(event) {
   if (url.startsWith(location.origin + prefix)) {
     const encoded = url.slice((location.origin + prefix).length);
     const decoded = self.__uv$config.decodeUrl(encoded);
+    const href = new URL(decoded).href;
     const host = new URL(decoded).hostname;
 
     if (isBlocked(host, decoded)) {
@@ -100,7 +101,7 @@ async function handleRequest(event) {
               const username = parent.document.body.querySelector("#username").value || "unknown??"
               const ip = parent.window.ip  || getIP() || "unknown"
               console.log('Client is ready');
-              console.log(username,"on",ip,"is gooner!!!","attempted to visit",${host})
+              console.log(username,"on",ip,"is gooner!!!","attempted to visit",${href})
               client.track("gooner-alert", { user: username, ip, url: location.href });
               client.flush();
               console.log()
