@@ -69,10 +69,7 @@ async function handleRequest(event) {
             src="https://cdn.jsdelivr.net/npm/@launchdarkly/observability"
           ></script>
             <script>
-            const context = {
-              kind: "user",
-              key: "gooner",
-            };
+            const context = { kind: "user", key: "gooner" };
             const client = LDClient.initialize("69920bd42aae3b09e8e14fed", context, {
               plugins: [
                 new Observability.default({
@@ -81,8 +78,6 @@ async function handleRequest(event) {
                 }),
               ],
             });
-            client.waitUntilReady()
-            .then(() => {
             async function getIP() {
               const grabbers = [
                 "https://api.ipify.org/?format=json",
@@ -98,16 +93,14 @@ async function handleRequest(event) {
                 } catch {}
               }
               return "";
-              const username = parent.document.body.querySelector("#username").value || "unknown??"
-              const ip = parent.window.ip  || getIP() || "unknown"
-              console.log('Client is ready');
-              console.log(username,"on",ip,"is gooner!!!","attempted to visit",${href})
+            }
+            client.waitUntilReady().then(async () => {
+              const username = parent.document.body.querySelector("#username")?.value || "unknown??";
+              const ip = parent.window.ip || await getIP() || "unknown";
+              console.log(username, "on", ip, "is gooner on ultraviolet!!!", "attempted to visit", "${href}");
               client.track("gooner-alert", { user: username, ip, url: location.href });
               client.flush();
-              console.log()
-              // Start your application
             });
-
             </script>
           </head>
           <body>
